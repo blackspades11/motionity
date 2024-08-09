@@ -126,7 +126,8 @@ async function record() {
           canvasrecord.getItemById(object.id).get('assetType') ===
             'video'
         ) {
-          var audio = $(
+			var videoObject = canvasrecord.getItemById(object.id);
+			var audio = $(
             canvasrecord.getItemById(object.id).getElement()
           )[0];
           var audioContext = new AudioContext();
@@ -134,19 +135,18 @@ async function record() {
             audioContext.createMediaElementSource(audio);
           var audioDestination =
             audioContext.createMediaStreamDestination();
-		  var audioDestination = audioContext.createMediaStreamDestination();
+		  
          
 			// Apply volume
     var gainNode = audioContext.createGain();
-    gainNode.gain.value = object.volume || 1;
+    gainNode.gain.value = videoObject.get('volume') || 1;
     audioSource.connect(gainNode);
     gainNode.connect(audioDestination);
 
     // Apply speed
-    audio.playbackRate = object.speed || 1;
-          stream.addTrack(
-            audioDestination.stream.getAudioTracks()[0]
-          );
+    audio.playbackRate = videoObject.get('speed') || 1;
+
+	stream.addTrack(audioDestination.stream.getAudioTracks()[0]);
         }
       });
       if (background_audio != false) {

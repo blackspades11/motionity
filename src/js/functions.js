@@ -372,6 +372,12 @@ function updateRecordCanvas() {
   canvas.clipPath = null;
   objects.forEach(async function (object) {
     var obj = canvas.getItemById(object.id);
+    if (obj.get('assetType') === 'video') {
+      obj.set({
+        volume: obj.get('volume') || 1,
+        speed: obj.get('speed') || 1
+      });
+    }
     if (obj.filters) {
       if (obj.filters.length > 0) {
         object.filters = [];
