@@ -252,16 +252,9 @@ function autoSave() {
         width: artboard.width,
         height: artboard.height,
       });
-      objects.forEach(function (object) {
-        var obj = canvas.getItemById(object.id);
-        if (obj && obj.get('assetType') === 'video') {
-          obj.set({
-            volume: obj.volume || 1, // Default to 1 if not set
-            speed: obj.speed || 1 // Default to 1 if not set
-          });
-        }
-        replaceSource(obj, canvas);
-      });
+    objects.forEach(function (object) {
+      replaceSource(canvas.getItemById(object.id), canvas);
+    });
   }
 }
 
