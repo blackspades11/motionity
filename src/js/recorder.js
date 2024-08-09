@@ -134,6 +134,7 @@ async function record() {
             audioContext.createMediaElementSource(audio);
           var audioDestination =
             audioContext.createMediaStreamDestination();
+		  var audioDestination = audioContext.createMediaStreamDestination();
          
 			// Apply volume
     var gainNode = audioContext.createGain();
