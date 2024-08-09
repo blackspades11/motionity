@@ -1,5 +1,5 @@
-var API_KEY = 'PIXABAY_API';
-var GOOGLE_FONTS_API_KEY = 'GOOGLE_FONTS_API_KEY';
+var API_KEY = "45231390-9cc4845cf0463527eaca5ceaa";
+var GOOGLE_FONTS_API_KEY = "AIzaSyDa0Lh4qhnXYsIUXFRsP59r8x0Jyoej5a4";
 
 // for legacy browsers
 const AudioContext = window.AudioContext || window.webkitAudioContext;
