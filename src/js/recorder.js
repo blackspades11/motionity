@@ -123,7 +123,7 @@ async function record() {
       objects.forEach(function (object) {
         if (
           canvasrecord.getItemById(object.id).get('assetType') &&
-          canvasrecord.getItemById(object.id).get('assetType') ==
+          canvasrecord.getItemById(object.id).get('assetType') ===
             'video'
         ) {
           var audio = $(
