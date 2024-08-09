@@ -733,6 +733,31 @@ function updateObjectValues(type) {
             parseFloat($(this).find('input').val()) / 200
           );
       }
+
+      // Add this new condition for speed control
+      if ($(this).attr('id') == 'object-speed') {
+        newKeyframe(
+          'speed',
+          canvas.getActiveObject(),
+          currenttime,
+          parseFloat($(this).find('input').val()) / 100,
+          true
+        );
+        canvas
+          .getActiveObject()
+          .set(
+            'speed',
+            parseFloat($(this).find('input').val()) / 100
+          );
+        
+        // Apply speed to the video element
+        if (canvas.getActiveObject().getElement()) {
+          canvas.getActiveObject().getElement().playbackRate = parseFloat($(this).find('input').val()) / 100;
+        }
+      }
+
+
+
       editingpanel = true;
       var selection = false;
       const tempselection = canvas.getActiveObjects();

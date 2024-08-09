@@ -705,10 +705,17 @@ function replaceSource(object, canvas) {
             vidObj.height = this.videoHeight;
             vidObj.currentTime = 0;
             vidObj.muted = false;
+            vidObj.volume = object.get('volume') || 1;
+            vidObj.playbackRate = object.get('speed') || 1;
+
             async function waitLoad() {
               if (vidObj.readyState >= 3) {
                 object.setElement(vidObj);
                 object.saveElem = vidObj;
+                object.set({
+                  volume: vidObj.volume,
+                  speed: vidObj.playbackRate
+                });
                 await canvas.renderAll();
                 await animate(false, currenttime);
                 if (

@@ -97,6 +97,10 @@ function autoSave() {
     canvas.clipPath = null;
     objects.forEach(async function (object) {
       var obj = canvas.getItemById(object.id);
+      if (obj.get('type') === 'video') {
+        object.volume = obj.get('volume') || 1;
+        object.speed = obj.get('speed') || 1;
+      }
       if (obj.filters) {
         if (obj.filters.length > 0) {
           object.filters = [];
@@ -252,9 +256,20 @@ function autoSave() {
         width: artboard.width,
         height: artboard.height,
       });
-    objects.forEach(function (object) {
-      replaceSource(canvas.getItemById(object.id), canvas);
-    });
+      objects.forEach(function (object) {
+        var obj = canvas.getItemById(object.id);
+        if (obj && obj.get('type') === 'video') {
+          obj.set({
+            volume: object.volume || 1,
+            speed: object.speed || 1
+          });
+          if (obj.getElement()) {
+            obj.getElement().volume = obj.get('volume');
+            obj.getElement().playbackRate = obj.get('speed');
+          }
+        }
+        replaceSource(obj, canvas);
+      });
   }
 }
 
