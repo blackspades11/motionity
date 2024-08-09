@@ -134,7 +134,15 @@ async function record() {
             audioContext.createMediaElementSource(audio);
           var audioDestination =
             audioContext.createMediaStreamDestination();
-          audioSource.connect(audioDestination);
+         
+			// Apply volume
+    var gainNode = audioContext.createGain();
+    gainNode.gain.value = object.volume || 1;
+    audioSource.connect(gainNode);
+    gainNode.connect(audioDestination);
+
+    // Apply speed
+    audio.playbackRate = object.speed || 1;
           stream.addTrack(
             audioDestination.stream.getAudioTracks()[0]
           );
