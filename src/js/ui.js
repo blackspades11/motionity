@@ -50,6 +50,18 @@ function updatePanel(selection) {
     ) {
       $('#object-specific').append(image_panel);
       $('#object-specific').append(video_more_panel);
+      $('#object-specific').append(`
+        <div id="video-volume">
+          <label>Volume:</label>
+          <input type="range" min="0" max="100" value="100" class="slider" id="video-volume-slider">
+          <span id="video-volume-value">100%</span>
+        </div>
+        <div id="video-speed">
+          <label>Speed:</label>
+          <input type="range" min="25" max="200" value="100" class="slider" id="video-speed-slider">
+          <span id="video-speed-value">1x</span>
+        </div>
+      `);
     } else {
       $('#object-specific').append(back_panel);
     }
@@ -577,6 +589,15 @@ function updatePanelValues() {
       colormode = 'fill';
       o_fill.setColor(object.get('fill'));
     }
+
+    // New video volume and speed controls
+    if (object.get('id').indexOf('Video') >= 0) {
+      $('#video-volume-slider').val(object.get('volume') * 100);
+      $('#video-volume-value').text(Math.round(object.get('volume') * 100) + '%');
+      $('#video-speed-slider').val(object.get('speed') * 100);
+      $('#video-speed-value').text(object.get('speed').toFixed(2) + 'x');
+    }
+
     if (tempstore) {
       object.toActiveSelection();
       canvas.renderAll();
@@ -2367,3 +2388,35 @@ function uploadLottie() {
   $('#filepick3').click();
 }
 $(document).on('click', '#upload-lottie', uploadLottie);
+
+
+
+$(document).on('input', '#video-volume-slider', function() {
+  const volume = parseFloat($(this).val()) / 100;
+  const object = canvas.getActiveObject();
+  if (object && object.get('id').indexOf('Video') >= 0) {
+    object.set('volume', volume);
+    $('#video-volume-value').text(Math.round(volume * 100) + '%');
+    const videoElement = document.getElementById(object.get('id'));
+    if (videoElement) {
+      videoElement.volume = volume;
+    }
+    canvas.renderAll();
+    save();
+  }
+});
+
+$(document).on('input', '#video-speed-slider', function() {
+  const speed = parseFloat($(this).val()) / 100;
+  const object = canvas.getActiveObject();
+  if (object && object.get('id').indexOf('Video') >= 0) {
+    object.set('speed', speed);
+    $('#video-speed-value').text(speed.toFixed(2) + 'x');
+    const videoElement = document.getElementById(object.get('id'));
+    if (videoElement) {
+      videoElement.playbackRate = speed;
+    }
+    canvas.renderAll();
+    save();
+  }
+});

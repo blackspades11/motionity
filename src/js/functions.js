@@ -3415,7 +3415,7 @@ function newSVG(svg, x, y, width, center) {
 }
 
 // Add a video to the canvas
-function newVideo(file, src, x, y, duration, center) {
+function newVideo(file, src, x, y, duration, center, volume, speed) {
   var newvid = new fabric.Image(file, {
     left: x,
     top: y,
@@ -3445,6 +3445,9 @@ function newVideo(file, src, x, y, duration, center) {
       blur: 0,
       opacity: 0,
     },
+    // Add these two new properties:
+    volume: volume,
+    speed: speed
   });
   files.push({ name: newvid.get('id'), file: src });
   newvid.saveElem = newvid.getElement();
@@ -3487,9 +3490,14 @@ function loadVideo(src, x, y, center) {
     vidObj.height = this.videoHeight;
     vidObj.currentTime = 0;
     vidObj.muted = false;
+
+    // Set initial volume and playback rate
+    vidObj.volume = 1; // Default volume: 100%
+    vidObj.playbackRate = 1; // Default speed: 1x
+
     function waitLoad() {
       if (vidObj.readyState >= 3) {
-        newVideo(vidObj, src, x, y, vidObj.duration, center);
+        newVideo(vidObj, src, x, y, vidObj.duration, center, vidObj.volume, vidObj.playbackRate);
       } else {
         window.setTimeout(function () {
           waitLoad();
